@@ -11,7 +11,6 @@ import BrandLogo from "@/components/ui/BrandLogo";
 import { cn } from "@/lib/utils";
 
 function CartButton({ dark = false }: { dark?: boolean }) {
-  const { count } = useCart();
   return (
     <Link
       href="/cart"
@@ -24,11 +23,6 @@ function CartButton({ dark = false }: { dark?: boolean }) {
       )}
     >
       <FiShoppingBag size={18} />
-      {count > 0 && (
-        <span className="absolute -right-1 -top-1 grid h-5 min-w-[20px] place-items-center rounded-full bg-lime px-1 text-[11px] font-bold text-navy">
-          {count}
-        </span>
-      )}
     </Link>
   );
 }

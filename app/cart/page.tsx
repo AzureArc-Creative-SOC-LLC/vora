@@ -1,34 +1,17 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiMinus, FiPlus, FiTrash2, FiArrowRight, FiShoppingBag } from "react-icons/fi";
 import { useCart } from "@/components/cart/CartContext";
 import ShopHeader from "@/components/cart/ShopHeader";
-import OrderModal from "@/components/cart/OrderModal";
-import OrderPlaced from "@/components/cart/OrderPlaced";
 import Footer from "@/components/Footer";
 
 export default function CartPage() {
-  const { items, setQty, remove, subtotal, count, ready, clear } = useCart();
+  const { items, setQty, remove, subtotal, count, ready } = useCart();
   const shipping = items.length ? 12 : 0;
   const total = subtotal + shipping;
-
-  const [modalOpen, setModalOpen] = useState(false);
-  const [placed, setPlaced] = useState(false);
-  const [orderId, setOrderId] = useState("");
-
-  const handleSuccess = (id: string) => {
-    setOrderId(id);
-    setPlaced(true);
-    setModalOpen(false);
-    clear();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  if (placed) return <OrderPlaced orderId={orderId} />;
 
   return (
     <main className="min-h-screen bg-ivory">
@@ -155,15 +138,15 @@ export default function CartPage() {
                   </div>
                 </dl>
 
-                <button
-                  onClick={() => setModalOpen(true)}
+                <Link
+                  href="/checkout"
                   className="btn-lime mt-7 w-full justify-between"
                 >
                   Checkout
                   <span className="icon-circle">
                     <FiArrowRight size={16} />
                   </span>
-                </button>
+                </Link>
                 <Link
                   href="/#products"
                   className="mt-3 block text-center text-sm text-navy/55 hover:text-navy"
@@ -180,16 +163,6 @@ export default function CartPage() {
           </div>
         )}
       </div>
-
-      <OrderModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onSuccess={handleSuccess}
-        items={items}
-        subtotal={subtotal}
-        shipping={shipping}
-        total={total}
-      />
 
       <Footer />
     </main>
