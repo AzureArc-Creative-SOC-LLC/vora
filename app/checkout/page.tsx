@@ -3,17 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FiArrowRight, FiLock, FiLoader, FiCreditCard, FiTag, FiX } from "react-icons/fi";
+import { FiArrowRight, FiLoader, FiTag, FiX } from "react-icons/fi";
 import { useCart } from "@/components/cart/CartContext";
 import ShopHeader from "@/components/cart/ShopHeader";
 import OrderPlacedModal from "@/components/cart/OrderPlacedModal";
 import Footer from "@/components/Footer";
 
-// Available promo codes — percent off the subtotal.
-const PROMOS: Record<string, { percent: number; label: string }> = {
-  VORA10: { percent: 10, label: "10% off" },
-  VORA20: { percent: 20, label: "20% off" },
-};
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "https://www.microservices.tech";
 
 export default function CheckoutPage() {
   const { items, subtotal, clear, ready } = useCart();
@@ -28,11 +25,6 @@ export default function CheckoutPage() {
     postcode: "",
     country: "United Kingdom",
     mobile: "",
-    // payment (demo only — not sent anywhere)
-    cardName: "",
-    cardNumber: "",
-    cardExpiry: "",
-    cardCvc: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -42,28 +34,53 @@ export default function CheckoutPage() {
   // promo code
   const [promoInput, setPromoInput] = useState("");
   const [appliedPromo, setAppliedPromo] = useState("");
+  const [appliedPromoPercent, setAppliedPromoPercent] = useState(0);
   const [promoError, setPromoError] = useState("");
+  const [promoLoading, setPromoLoading] = useState(false);
 
   const shipping = items.length ? 12 : 0;
-  const promo = appliedPromo ? PROMOS[appliedPromo] : null;
-  const discount = promo ? Math.round((subtotal * promo.percent) / 100) : 0;
+  const discount = appliedPromo
+    ? Math.round((subtotal * appliedPromoPercent) / 100)
+    : 0;
   const total = subtotal + shipping - discount;
 
-  const applyPromo = () => {
+  const applyPromo = async () => {
     const code = promoInput.trim().toUpperCase();
     setPromoError("");
     if (!code) return;
-    if (!PROMOS[code]) {
-      setAppliedPromo("");
-      setPromoError("That code isn’t valid.");
-      return;
+    setPromoLoading(true);
+    try {
+      const res = await fetch(`${API_BASE}/api/promos/validate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 404 || data.valid === false) {
+        setAppliedPromo("");
+        setAppliedPromoPercent(0);
+        setPromoError("That code isn’t valid.");
+        return;
+      }
+      if (!res.ok || !data.ok) {
+        setAppliedPromo("");
+        setAppliedPromoPercent(0);
+        setPromoError(data.error || "Couldn’t check that code. Try again.");
+        return;
+      }
+      setAppliedPromo(code);
+      setAppliedPromoPercent(Number(data.percent) || 0);
+      setPromoInput(code);
+    } catch {
+      setPromoError("Network error. Please try again.");
+    } finally {
+      setPromoLoading(false);
     }
-    setAppliedPromo(code);
-    setPromoInput(code);
   };
 
   const removePromo = () => {
     setAppliedPromo("");
+    setAppliedPromoPercent(0);
     setPromoInput("");
     setPromoError("");
   };
@@ -79,7 +96,7 @@ export default function CheckoutPage() {
     setError("");
     setLoading(true);
     try {
-      const res = await fetch("/api/order", {
+      const res = await fetch(`${API_BASE}/api/central/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -106,7 +123,7 @@ export default function CheckoutPage() {
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || "Something went wrong");
-      setOrderId(data.id);
+      setOrderId(data.orderNumber || String(data.orderId || ""));
       setPlaced(true);
       clear();
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -155,8 +172,22 @@ export default function CheckoutPage() {
           <div className="flex flex-col gap-6">
             {/* Contact */}
             <section className="rounded-[28px] border border-sand bg-white p-7 sm:p-8">
-              <h2 className="font-serif text-2xl text-navy">Contact</h2>
+              <SectionTitle>Contact</SectionTitle>
               <div className="mt-5 grid gap-4">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <Field
+                    label="First name"
+                    value={form.firstName}
+                    onChange={set("firstName")}
+                    placeholder="Jordan"
+                  />
+                  <Field
+                    label="Last name"
+                    value={form.lastName}
+                    onChange={set("lastName")}
+                    placeholder="Avery"
+                  />
+                </div>
                 <Field
                   label="Email address"
                   type="email"
@@ -176,36 +207,22 @@ export default function CheckoutPage() {
 
             {/* Shipping */}
             <section className="rounded-[28px] border border-sand bg-white p-7 sm:p-8">
-              <h2 className="font-serif text-2xl text-navy">Shipping address</h2>
+              <SectionTitle>Shipping address</SectionTitle>
               <div className="mt-5 grid gap-4">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <Field
-                    label="First name"
-                    value={form.firstName}
-                    onChange={set("firstName")}
-                    placeholder="Jordan"
-                  />
-                  <Field
-                    label="Last name"
-                    value={form.lastName}
-                    onChange={set("lastName")}
-                    placeholder="Avery"
-                  />
-                </div>
                 <Field
-                  label="Address"
+                  label="Address line 1"
                   value={form.address}
                   onChange={set("address")}
-                  placeholder="123 Research Park Way"
+                  placeholder="123 Research Park"
                 />
                 <Field
-                  label="Apartment, suite, etc. (optional)"
+                  label="Address line 2"
+                  optional
                   value={form.apartment}
                   onChange={set("apartment")}
                   placeholder="Unit 4B"
-                  required={false}
                 />
-                <div className="grid gap-4 sm:grid-cols-3">
+                <div className="grid gap-4 sm:grid-cols-2">
                   <Field
                     label="City"
                     value={form.city}
@@ -216,80 +233,30 @@ export default function CheckoutPage() {
                     label="Postcode"
                     value={form.postcode}
                     onChange={set("postcode")}
-                    placeholder="EC1A 1BB"
+                    placeholder="SW1A 1AA"
                   />
-                  <label className="block">
-                    <span className="mb-1.5 block text-[13px] font-medium text-navy/60">
-                      Country
-                    </span>
-                    <select
-                      value={form.country}
-                      onChange={set("country")}
-                      className="w-full rounded-xl border border-sand bg-white px-4 py-3 text-[15px] text-navy outline-none transition-colors focus:border-navy/40"
-                    >
-                      <option>United Kingdom</option>
-                      <option>Ireland</option>
-                      <option>France</option>
-                      <option>Germany</option>
-                      <option>Netherlands</option>
-                      <option>Spain</option>
-                      <option>Other (EU)</option>
-                    </select>
-                  </label>
                 </div>
+                <label className="block">
+                  <span className="mb-1.5 block text-[13px] font-medium text-navy/60">
+                    Country
+                  </span>
+                  <select
+                    value={form.country}
+                    onChange={set("country")}
+                    className="w-full rounded-xl border border-sand bg-white px-4 py-3 text-[15px] text-navy outline-none transition-colors focus:border-navy/40"
+                  >
+                    <option>United Kingdom</option>
+                    <option>Ireland</option>
+                    <option>France</option>
+                    <option>Germany</option>
+                    <option>Netherlands</option>
+                    <option>Spain</option>
+                    <option>Other (EU)</option>
+                  </select>
+                </label>
               </div>
             </section>
 
-            {/* Payment (demo) */}
-            <section className="rounded-[28px] border border-sand bg-white p-7 sm:p-8">
-              <div className="flex items-center justify-between">
-                <h2 className="font-serif text-2xl text-navy">Payment</h2>
-                <span className="flex items-center gap-1.5 text-[12px] text-navy/45">
-                  <FiLock size={12} /> Secure
-                </span>
-              </div>
-              <div className="mt-5 grid gap-4">
-                <Field
-                  label="Name on card"
-                  value={form.cardName}
-                  onChange={set("cardName")}
-                  placeholder="Jordan Avery"
-                />
-                <label className="block">
-                  <span className="mb-1.5 block text-[13px] font-medium text-navy/60">
-                    Card number
-                  </span>
-                  <div className="flex items-center rounded-xl border border-sand bg-white pr-4 transition-colors focus-within:border-navy/40">
-                    <input
-                      required
-                      inputMode="numeric"
-                      value={form.cardNumber}
-                      onChange={set("cardNumber")}
-                      placeholder="4242 4242 4242 4242"
-                      className="w-full rounded-xl bg-transparent px-4 py-3 text-[15px] text-navy outline-none placeholder:text-navy/30"
-                    />
-                    <FiCreditCard className="text-navy/35" size={18} />
-                  </div>
-                </label>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <Field
-                    label="Expiry (MM/YY)"
-                    value={form.cardExpiry}
-                    onChange={set("cardExpiry")}
-                    placeholder="08/27"
-                  />
-                  <Field
-                    label="CVC"
-                    value={form.cardCvc}
-                    onChange={set("cardCvc")}
-                    placeholder="123"
-                  />
-                </div>
-              </div>
-              <p className="mt-4 flex items-center gap-2 text-[13px] text-navy/45">
-                <FiLock size={13} /> Demo checkout — no real payment is processed.
-              </p>
-            </section>
           </div>
 
           {/* ---------- Right: order summary ---------- */}
@@ -327,7 +294,7 @@ export default function CheckoutPage() {
                 <div className="mb-5 flex items-center justify-between rounded-2xl bg-lime/40 px-4 py-3">
                   <span className="flex items-center gap-2 text-[14px] font-medium text-navy">
                     <FiTag size={15} /> {appliedPromo} applied
-                    <span className="text-navy/55">· {promo?.label}</span>
+                    <span className="text-navy/55">· {appliedPromoPercent}% off</span>
                   </span>
                   <button
                     type="button"
@@ -359,9 +326,10 @@ export default function CheckoutPage() {
                     <button
                       type="button"
                       onClick={applyPromo}
-                      className="rounded-xl border border-navy/15 px-5 text-[14px] font-semibold text-navy transition-colors hover:bg-navy hover:text-ivory"
+                      disabled={promoLoading}
+                      className="rounded-xl border border-navy/15 px-5 text-[14px] font-semibold text-navy transition-colors hover:bg-navy hover:text-ivory disabled:opacity-60"
                     >
-                      Apply
+                      {promoLoading ? "…" : "Apply"}
                     </button>
                   </div>
                   {promoError && (
@@ -432,6 +400,14 @@ export default function CheckoutPage() {
   );
 }
 
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="text-[13px] font-semibold uppercase tracking-[0.22em] text-[#b59e7d]">
+      {children}
+    </h2>
+  );
+}
+
 function Field({
   label,
   value,
@@ -439,6 +415,7 @@ function Field({
   type = "text",
   placeholder,
   required = true,
+  optional = false,
 }: {
   label: string;
   value: string;
@@ -446,14 +423,16 @@ function Field({
   type?: string;
   placeholder?: string;
   required?: boolean;
+  optional?: boolean;
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-[13px] font-medium text-navy/60">
+      <span className="mb-1.5 block text-[13px] font-medium text-navy/70">
         {label}
+        {optional && <span className="font-normal text-navy/40"> (optional)</span>}
       </span>
       <input
-        required={required}
+        required={optional ? false : required}
         type={type}
         value={value}
         onChange={onChange}

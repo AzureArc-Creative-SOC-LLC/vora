@@ -5,6 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FiX, FiArrowRight, FiLoader } from "react-icons/fi";
 import type { CartItem } from "./CartContext";
 
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "https://www.microservices.tech";
+
 type Props = {
   open: boolean;
   onClose: () => void;
@@ -41,7 +44,7 @@ export default function OrderModal({
     setError("");
     setLoading(true);
     try {
-      const res = await fetch("/api/order", {
+      const res = await fetch(`${API_BASE}/api/central/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -54,7 +57,7 @@ export default function OrderModal({
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || "Something went wrong");
-      onSuccess(data.id);
+      onSuccess(data.orderNumber || String(data.orderId || ""));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not place order");
       setLoading(false);

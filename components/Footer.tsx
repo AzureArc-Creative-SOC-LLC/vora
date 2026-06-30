@@ -8,8 +8,51 @@ import { LuShieldAlert } from "react-icons/lu";
 import { FOOTER_LINKS } from "@/lib/data";
 import BrandLogo from "@/components/ui/BrandLogo";
 
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "https://www.microservices.tech";
+
+type SubscribeStatus = "idle" | "loading" | "success" | "already" | "error";
+
 export default function Footer() {
   const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<SubscribeStatus>("idle");
+  const [message, setMessage] = useState("");
+
+  const subscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (status === "loading") return;
+    setStatus("loading");
+    setMessage("");
+    try {
+      const res = await fetch(`${API_BASE}/api/newsletter/subscribe`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim(),
+          consent: true,
+          source: "footer_research_updates",
+          website: "",
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) {
+        setStatus("error");
+        setMessage(data.error || "Couldn't subscribe. Please try again.");
+        return;
+      }
+      if (data.already_subscribed) {
+        setStatus("already");
+        setMessage("You're already on the list.");
+      } else {
+        setStatus("success");
+        setMessage("Subscribed — check your inbox for updates.");
+        setEmail("");
+      }
+    } catch {
+      setStatus("error");
+      setMessage("Network error. Please try again.");
+    }
+  };
 
   return (
     <footer id="footer" className="bg-navy text-ivory">
@@ -74,7 +117,7 @@ export default function Footer() {
               alerts.
             </p>
             <form
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={subscribe}
               className="mt-6 flex items-center gap-2 rounded-full border border-white/15 bg-white/5 p-1.5 pl-5"
             >
               <input
@@ -83,17 +126,31 @@ export default function Footer() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email address"
-                className="w-full bg-transparent text-[15px] text-ivory placeholder:text-ivory/40 focus:outline-none"
+                disabled={status === "loading"}
+                className="w-full bg-transparent text-[15px] text-ivory placeholder:text-ivory/40 focus:outline-none disabled:opacity-60"
               />
               <motion.button
                 whileTap={{ scale: 0.94 }}
                 type="submit"
                 aria-label="Subscribe"
-                className="grid h-11 w-11 flex-none place-items-center rounded-full bg-lime text-navy"
+                disabled={status === "loading"}
+                className="grid h-11 w-11 flex-none place-items-center rounded-full bg-lime text-navy disabled:opacity-60"
               >
                 <FiArrowUpRight size={18} />
               </motion.button>
             </form>
+            {message && (
+              <p
+                className={`mt-3 text-[13px] ${
+                  status === "error"
+                    ? "text-red-300"
+                    : "text-lime"
+                }`}
+                role="status"
+              >
+                {message}
+              </p>
+            )}
             <div className="mt-8 space-y-2 text-ivory/65">
               <p>research@voralabs.com</p>
               <p>Tracked, cold-chain UK shipping</p>

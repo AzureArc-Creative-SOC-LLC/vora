@@ -11,10 +11,11 @@ import BrandLogo from "@/components/ui/BrandLogo";
 import { cn } from "@/lib/utils";
 
 function CartButton({ dark = false }: { dark?: boolean }) {
+  const { count, ready } = useCart();
   return (
     <Link
       href="/cart"
-      aria-label="Cart"
+      aria-label={`Cart${ready && count > 0 ? `, ${count} item${count === 1 ? "" : "s"}` : ""}`}
       className={cn(
         "relative grid h-11 w-11 place-items-center rounded-full border transition-colors",
         dark
@@ -23,6 +24,19 @@ function CartButton({ dark = false }: { dark?: boolean }) {
       )}
     >
       <FiShoppingBag size={18} />
+      {ready && count > 0 && (
+        <span
+          aria-hidden
+          className={cn(
+            "absolute -right-1 -top-1 grid min-w-[20px] h-5 place-items-center rounded-full px-1 text-[11px] font-semibold leading-none ring-2",
+            dark
+              ? "bg-lime text-navy ring-navy"
+              : "bg-navy text-ivory ring-white"
+          )}
+        >
+          {count > 99 ? "99+" : count}
+        </span>
+      )}
     </Link>
   );
 }
