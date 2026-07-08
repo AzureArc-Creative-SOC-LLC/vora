@@ -33,7 +33,7 @@ export default function AddToCart({ product }: { product: Product }) {
         <button
           aria-label="Decrease"
           onClick={() => setQty((q) => Math.max(1, q - 1))}
-          className="grid h-10 w-10 place-items-center rounded-full text-navy transition-colors hover:bg-beige"
+          className="grid h-11 w-11 place-items-center rounded-full text-navy transition-colors hover:bg-beige"
         >
           <FiMinus size={16} />
         </button>
@@ -41,7 +41,7 @@ export default function AddToCart({ product }: { product: Product }) {
         <button
           aria-label="Increase"
           onClick={() => setQty((q) => q + 1)}
-          className="grid h-10 w-10 place-items-center rounded-full text-navy transition-colors hover:bg-beige"
+          className="grid h-11 w-11 place-items-center rounded-full text-navy transition-colors hover:bg-beige"
         >
           <FiPlus size={16} />
         </button>

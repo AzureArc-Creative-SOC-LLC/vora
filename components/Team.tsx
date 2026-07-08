@@ -30,8 +30,8 @@ export default function Team() {
                   sizes="(max-width:768px) 100vw, 33vw"
                   className="object-cover transition-transform duration-[1.4s] ease-smooth group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy/70 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                <div className="absolute inset-x-0 bottom-0 flex translate-y-4 items-center justify-center gap-3 p-6 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                <div className="absolute inset-0 bg-gradient-to-t from-navy/70 to-transparent opacity-100 transition-opacity duration-500 lg:opacity-0 lg:group-hover:opacity-100" />
+                <div className="absolute inset-x-0 bottom-0 flex translate-y-0 items-center justify-center gap-3 p-6 opacity-100 transition-all duration-500 lg:translate-y-4 lg:opacity-0 lg:group-hover:translate-y-0 lg:group-hover:opacity-100">
                   {[LuMail, LuFlaskConical].map((Icon, idx) => (
                     <span
                       key={idx}

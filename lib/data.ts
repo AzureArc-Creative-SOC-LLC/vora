@@ -16,13 +16,13 @@ export const NAV_LINKS = [
 const ALLUVI = "https://alluvi.bz/images";
 
 export const IMG = {
-  hero: "/images/hero-new.jpeg",
+  hero: "/images/update-img/hero-img-seo.webp",
   heroVid1:
     "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=800&q=80",
   heroVid2:
     "https://images.unsplash.com/photo-1579165466949-3180a3d056d5?auto=format&fit=crop&w=800&q=80",
-  aboutA: "/images/about1.jpeg",
-  aboutB: "/images/about2.jpeg",
+  aboutA: "/images/update-img/verified-seo.webp",
+  aboutB: "/images/update-img/room-temp-seo.webp",
 
   // Real Vora Labs product imagery (saved locally in /public/images/products)
   tirz: "/images/products/tirzepatide.jpeg",
@@ -33,40 +33,32 @@ export const IMG = {
   nad: "/images/products/nad.jpeg",
   app: `${ALLUVI}/Holding-iPhone_1Holding-iPhone.webp`,
 
-  work1:
-    "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=1100&q=80",
-  work2:
-    "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=1100&q=80",
-  work3:
-    "https://images.unsplash.com/photo-1579165466949-3180a3d056d5?auto=format&fit=crop&w=1100&q=80",
-  work4:
-    "https://images.unsplash.com/photo-1581595219315-a187dd40c322?auto=format&fit=crop&w=1100&q=80",
-  fac1: "/images/Synthesis.jpeg",
-  fac2: "/images/fill.jpeg",
-  fac3: "/images/hplc.jpeg",
-  fac4: "/images/coldchain.jpeg",
-  fac5: "https://images.unsplash.com/photo-1614935151651-0bea6508db6b?auto=format&fit=crop&w=1000&q=80",
-  fac6: "https://images.unsplash.com/photo-1579165466949-3180a3d056d5?auto=format&fit=crop&w=1000&q=80",
+  work1: "/images/update-img/synthesis-seo.webp",
+  work2: "/images/update-img/02-option-2.png",
+  work3: "/images/update-img/03-option-3.png",
+  work4: "/images/update-img/verified-seo.webp",
+  fac1: "/images/update-img/synthesis-seo.webp",
+  fac2: "/images/update-img/fill-seo.webp",
+  fac3: "/images/update-img/hplc-seo.webp",
+  fac4: "/images/update-img/chain-storage.png",
+  fac5: "/images/update-img/stability-seo.webp",
+  fac6: "/images/update-img/dispatch-seo.webp",
   blog1:
     "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=80",
   blog2:
     "https://images.unsplash.com/photo-1614935151651-0bea6508db6b?auto=format&fit=crop&w=900&q=80",
   blog3:
     "https://images.unsplash.com/photo-1581595219315-a187dd40c322?auto=format&fit=crop&w=900&q=80",
-  cta: "https://images.unsplash.com/photo-1518152006812-edab29b069ac?auto=format&fit=crop&w=1600&q=80",
-  team1:
-    "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=700&q=80",
-  team2:
-    "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=700&q=80",
-  team3:
-    "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=700&q=80",
+  cta: "/images/update-img/compound-seo.webp",
+  team1: "/images/update-img/team1-seo.webp",
+  team2: "/images/update-img/team2-seo.webp",
+  team3: "/images/update-img/team3-seo.webp",
 };
 
 export const AVATARS = [
-  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80",
-  "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80",
-  "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=120&q=80",
-  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80",
+  "/images/update-img/testimonial-1-seo.webp",
+  "/images/update-img/testimonial-2-seo.webp",
+  "/images/update-img/testimonial-3-seo.webp",
 ];
 
 // Research compounds (Products section — sticky stacking cards)
@@ -229,7 +221,7 @@ export const TESTIMONIALS = [
   {
     name: "Daniel R.",
     sub: "Verified Buyer",
-    avatar: AVATARS[3],
+    avatar: AVATARS[0],
     quote:
       "Easily the best supplier I've ordered from. The COA matched what arrived, packaging was discreet, and it landed in two days. I've already placed my third order.",
     tags: ["COA Matched", "Fast Delivery", "Discreet", "Reordered"],
@@ -237,7 +229,7 @@ export const TESTIMONIALS = [
   {
     name: "Sophie M.",
     sub: "Returning Client",
-    avatar: AVATARS[0],
+    avatar: AVATARS[1],
     quote:
       "I was nervous ordering online but Vora Labs made it simple. Tracking updates the whole way, cold-chain packaging intact, and the pen quality is genuinely premium.",
     tags: ["Great Tracking", "Cold Chain", "Premium Pen", "Trusted"],
@@ -245,7 +237,7 @@ export const TESTIMONIALS = [
   {
     name: "James T.",
     sub: "Verified Buyer",
-    avatar: AVATARS[3],
+    avatar: AVATARS[2],
     quote:
       "Every batch comes with a Janoshik certificate I can actually verify myself. That transparency is why I keep coming back — no other supplier comes close.",
     tags: ["Verifiable COA", "Transparent", "Consistent", "Loyal"],
@@ -253,7 +245,7 @@ export const TESTIMONIALS = [
   {
     name: "Aisha K.",
     sub: "Verified Buyer",
-    avatar: AVATARS[1],
+    avatar: AVATARS[0],
     quote:
       "Ordering, payment and delivery were all smooth. Customer support answered within the hour and the purity was exactly as listed. Couldn't ask for more.",
     tags: ["Smooth Order", "Quick Support", "Accurate", "Recommended"],
@@ -261,7 +253,7 @@ export const TESTIMONIALS = [
   {
     name: "Marcus L.",
     sub: "Returning Client",
-    avatar: AVATARS[2],
+    avatar: AVATARS[1],
     quote:
       "Five orders in and the quality has never dropped. Same purity, same fast UK shipping every time. Vora Labs has become my go-to supplier without question.",
     tags: ["Consistent", "Fast UK Shipping", "Reliable", "Go-To"],
@@ -269,7 +261,7 @@ export const TESTIMONIALS = [
   {
     name: "Elena V.",
     sub: "Verified Buyer",
-    avatar: AVATARS[0],
+    avatar: AVATARS[2],
     quote:
       "Brilliant from start to finish. Clear product info, sealed cold-chain delivery, and the batch details on everything. Honestly the most professional service I've used.",
     tags: ["Clear Info", "Sealed Delivery", "Batch Details", "Professional"],

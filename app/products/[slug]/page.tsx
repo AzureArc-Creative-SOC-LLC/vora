@@ -53,7 +53,7 @@ export default async function ProductPage({
           <span className="text-navy/80">{product.name}</span>
         </nav>
 
-        <div className="grid gap-10 lg:grid-cols-[1.18fr_0.82fr] lg:gap-14">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.18fr_0.82fr] lg:gap-14">
           {/* LEFT — product image gallery */}
           <div className="relative">
             <ProductGallery images={product.gallery} alt={product.name} />

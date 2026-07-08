@@ -120,7 +120,7 @@ export default function About() {
               </Reveal>
 
               <Reveal delay={0.1} className="rounded-[28px] border border-sand bg-white p-9">
-                <p className="font-serif text-6xl text-navy sm:text-7xl">
+                <p className="font-serif text-5xl text-navy sm:text-6xl lg:text-7xl">
                   <Counter to={99} suffix="%" />
                 </p>
                 <div className="mt-6 h-px w-full bg-sand" />
@@ -128,7 +128,7 @@ export default function About() {
               </Reveal>
 
               <Reveal delay={0.15} className="rounded-[28px] border border-sand bg-white p-9">
-                <p className="font-serif text-6xl text-navy sm:text-7xl">
+                <p className="font-serif text-5xl text-navy sm:text-6xl lg:text-7xl">
                   <Counter to={56} suffix="" />
                 </p>
                 <div className="mt-6 h-px w-full bg-sand" />

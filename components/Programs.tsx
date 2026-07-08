@@ -27,7 +27,7 @@ export default function Programs() {
                 className="grid items-center gap-8 rounded-[34px] border border-white/10 bg-navy p-6 shadow-[0_-10px_60px_-30px_rgba(0,0,0,0.6)] lg:grid-cols-[1fr_1.2fr_1fr] lg:gap-10 lg:p-8"
               >
                 {/* Left: id + title */}
-                <div className="flex min-h-[320px] flex-col justify-between rounded-[26px] border border-white/10 p-7">
+                <div className="flex flex-col justify-between rounded-[26px] border border-white/10 p-7 lg:min-h-[320px]">
                   <div className="flex items-center gap-3">
                     <span className="rounded-full border border-lime/60 px-5 py-2 font-serif text-xl text-lime">
                       {p.id}
@@ -52,7 +52,7 @@ export default function Programs() {
                 </div>
 
                 {/* Right: tags + cta */}
-                <div className="flex min-h-[320px] flex-col justify-between">
+                <div className="flex flex-col justify-between lg:min-h-[320px]">
                   <div>
                     <p className="mb-5 text-ivory/70">Specifications:</p>
                     <div className="flex flex-wrap gap-3">

@@ -42,7 +42,7 @@ export default function CartPage() {
             </Link>
           </div>
         ) : (
-          <div className="mt-10 grid gap-8 lg:grid-cols-[1.6fr_1fr]">
+          <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[1.6fr_1fr]">
             {/* items */}
             <div className="flex flex-col gap-4">
               <AnimatePresence initial={false}>
@@ -79,12 +79,12 @@ export default function CartPage() {
                         £{it.price} GBP each
                       </p>
 
-                      <div className="mt-3 flex items-center gap-4">
+                      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
                         <div className="flex items-center gap-1 rounded-full border border-sand p-1">
                           <button
                             aria-label="Decrease"
                             onClick={() => setQty(it.slug, it.qty - 1)}
-                            className="grid h-8 w-8 place-items-center rounded-full text-navy hover:bg-beige"
+                            className="grid h-10 w-10 place-items-center rounded-full text-navy hover:bg-beige"
                           >
                             <FiMinus size={14} />
                           </button>
@@ -94,7 +94,7 @@ export default function CartPage() {
                           <button
                             aria-label="Increase"
                             onClick={() => setQty(it.slug, it.qty + 1)}
-                            className="grid h-8 w-8 place-items-center rounded-full text-navy hover:bg-beige"
+                            className="grid h-10 w-10 place-items-center rounded-full text-navy hover:bg-beige"
                           >
                             <FiPlus size={14} />
                           </button>

@@ -8,6 +8,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        // Extra-small breakpoint for fine control on small phones (≥480px),
+        // complementing the default sm=640/md=768/lg=1024/xl=1280/2xl=1536.
+        xs: "480px",
+      },
       colors: {
         ivory: "#FFFBF3",
         beige: "#F3F0EB",

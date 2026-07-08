@@ -3,11 +3,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiArrowUpRight, FiShoppingBag } from "react-icons/fi";
+import { FiArrowUpRight, FiShoppingBag, FiUser } from "react-icons/fi";
 import { HiBars3, HiXMark } from "react-icons/hi2";
 import { NAV_LINKS } from "@/lib/data";
 import { useCart } from "@/components/cart/CartContext";
 import BrandLogo from "@/components/ui/BrandLogo";
+import AccountButton from "@/components/auth/AccountButton";
 import { cn } from "@/lib/utils";
 
 function CartButton({ dark = false }: { dark?: boolean }) {
@@ -98,6 +99,7 @@ export default function Navbar() {
           </ul>
 
           <div className="flex items-center gap-2">
+            <AccountButton />
             <CartButton />
             <Link
               href="#products"
@@ -182,6 +184,13 @@ export default function Navbar() {
                 <span className="icon-circle">
                   <FiArrowUpRight size={18} />
                 </span>
+              </Link>
+              <Link
+                href="/login"
+                onClick={() => setOpen(false)}
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border border-white/25 bg-white/5 py-4 text-[15px] font-semibold text-ivory transition-colors hover:bg-white/15"
+              >
+                <FiUser size={18} /> Sign in
               </Link>
             </motion.div>
           </motion.div>

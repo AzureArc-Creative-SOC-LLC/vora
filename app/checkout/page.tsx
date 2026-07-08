@@ -8,12 +8,15 @@ import { useCart } from "@/components/cart/CartContext";
 import ShopHeader from "@/components/cart/ShopHeader";
 import OrderPlacedModal from "@/components/cart/OrderPlacedModal";
 import Footer from "@/components/Footer";
+import { validatePromo } from "@/services/promo.service";
+import { submitCheckout } from "@/services/checkout.service";
+import { useToast } from "@/components/ui/Toast";
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "https://www.microservices.tech";
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function CheckoutPage() {
   const { items, subtotal, clear, ready } = useCart();
+  const toast = useToast();
 
   const [form, setForm] = useState({
     email: "",
@@ -39,6 +42,7 @@ export default function CheckoutPage() {
   const [promoLoading, setPromoLoading] = useState(false);
 
   const shipping = items.length ? 12 : 0;
+  // Discount is derived from the backend-validated percent — never invented here.
   const discount = appliedPromo
     ? Math.round((subtotal * appliedPromoPercent) / 100)
     : 0;
@@ -48,31 +52,27 @@ export default function CheckoutPage() {
     const code = promoInput.trim().toUpperCase();
     setPromoError("");
     if (!code) return;
+    if (code === appliedPromo) {
+      setPromoError("That code is already applied.");
+      return;
+    }
     setPromoLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/promos/validate`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (res.status === 404 || data.valid === false) {
+      const result = await validatePromo(code);
+      if (!result) {
         setAppliedPromo("");
         setAppliedPromoPercent(0);
         setPromoError("That code isn’t valid.");
         return;
       }
-      if (!res.ok || !data.ok) {
-        setAppliedPromo("");
-        setAppliedPromoPercent(0);
-        setPromoError(data.error || "Couldn’t check that code. Try again.");
-        return;
-      }
-      setAppliedPromo(code);
-      setAppliedPromoPercent(Number(data.percent) || 0);
-      setPromoInput(code);
-    } catch {
-      setPromoError("Network error. Please try again.");
+      setAppliedPromo(result.code);
+      setAppliedPromoPercent(result.percent);
+      setPromoInput(result.code);
+      toast.success(`Promo applied — ${result.percent}% off.`);
+    } catch (err) {
+      setPromoError(
+        err instanceof Error ? err.message : "Couldn’t check that code. Try again."
+      );
     } finally {
       setPromoLoading(false);
     }
@@ -92,43 +92,45 @@ export default function CheckoutPage() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading || placed) return; // double-checkout prevention
     if (!items.length) return;
+    if (!EMAIL_RE.test(form.email.trim())) {
+      setError("Enter a valid email address.");
+      return;
+    }
     setError("");
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/central/orders`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          customer: {
-            firstName: form.firstName,
-            lastName: form.lastName,
-            email: form.email,
-            mobile: form.mobile,
-          },
-          shippingAddress: {
-            line1: form.address,
-            line2: form.apartment,
-            city: form.city,
-            postcode: form.postcode,
-            country: form.country,
-          },
-          promoCode: appliedPromo,
-          items: items.map((i) => ({ name: i.name, price: i.price, qty: i.qty })),
+      const data = await submitCheckout(
+        {
+          email: form.email,
+          firstName: form.firstName,
+          lastName: form.lastName,
+          phone: form.mobile,
+          address: form.address,
+          apartment: form.apartment,
+          city: form.city,
+          postcode: form.postcode,
+          country: form.country,
+        },
+        items,
+        {
           subtotal,
-          shipping,
-          discount,
+          discountAmount: discount,
           total,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.ok) throw new Error(data.error || "Something went wrong");
-      setOrderId(data.orderNumber || String(data.orderId || ""));
+          promoCode: appliedPromo,
+          promoPercent: appliedPromoPercent,
+        }
+      );
+      setOrderId(data.orderNumber || data.orderId || "");
       setPlaced(true);
       clear();
+      toast.success("Order placed successfully.");
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not place order");
+      const msg = err instanceof Error ? err.message : "Could not place order";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -166,7 +168,7 @@ export default function CheckoutPage() {
 
         <form
           onSubmit={submit}
-          className="mt-10 grid gap-8 lg:grid-cols-[1.6fr_1fr] lg:items-start"
+          className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[1.6fr_1fr] lg:items-start"
         >
           {/* ---------- Left: details ---------- */}
           <div className="flex flex-col gap-6">
@@ -300,7 +302,7 @@ export default function CheckoutPage() {
                     type="button"
                     onClick={removePromo}
                     aria-label="Remove promo code"
-                    className="grid h-7 w-7 place-items-center rounded-full text-navy/55 hover:bg-white hover:text-navy"
+                    className="grid h-9 w-9 place-items-center rounded-full text-navy/55 hover:bg-white hover:text-navy"
                   >
                     <FiX size={15} />
                   </button>

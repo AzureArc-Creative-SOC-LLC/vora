@@ -47,7 +47,7 @@ export default function Blog() {
 
               <div className="mt-5 flex items-center justify-between border-t border-sand pt-5">
                 <span className="text-[14px] text-navy/70">By {b.author}</span>
-                <span className="grid h-10 w-10 place-items-center rounded-full border border-sand text-navy transition-all duration-500 group-hover:bg-navy group-hover:text-lime">
+                <span className="grid h-11 w-11 place-items-center rounded-full border border-sand text-navy transition-all duration-500 group-hover:bg-navy group-hover:text-lime">
                   <FiArrowUpRight size={18} />
                 </span>
               </div>

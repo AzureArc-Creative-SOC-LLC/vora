@@ -3,6 +3,8 @@ import { Playfair_Display, Inter_Tight } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import { CartProvider } from "@/components/cart/CartContext";
+import { AuthProvider } from "@/hooks/useAuth";
+import { ToastProvider } from "@/components/ui/Toast";
 import Preloader from "@/components/Preloader";
 
 const playfair = Playfair_Display({
@@ -39,9 +41,13 @@ export default function RootLayout({
     <html lang="en" className={`${playfair.variable} ${interTight.variable}`}>
       <body>
         <Preloader />
-        <CartProvider>
-          <SmoothScroll>{children}</SmoothScroll>
-        </CartProvider>
+        <AuthProvider>
+          <ToastProvider>
+            <CartProvider>
+              <SmoothScroll>{children}</SmoothScroll>
+            </CartProvider>
+          </ToastProvider>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -7,9 +7,7 @@ import { FiArrowUpRight } from "react-icons/fi";
 import { LuShieldAlert } from "react-icons/lu";
 import { FOOTER_LINKS } from "@/lib/data";
 import BrandLogo from "@/components/ui/BrandLogo";
-
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "https://www.microservices.tech";
+import { subscribeNewsletter } from "@/services/newsletter.service";
 
 type SubscribeStatus = "idle" | "loading" | "success" | "already" | "error";
 
@@ -24,23 +22,8 @@ export default function Footer() {
     setStatus("loading");
     setMessage("");
     try {
-      const res = await fetch(`${API_BASE}/api/newsletter/subscribe`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: email.trim(),
-          consent: true,
-          source: "footer_research_updates",
-          website: "",
-        }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.ok) {
-        setStatus("error");
-        setMessage(data.error || "Couldn't subscribe. Please try again.");
-        return;
-      }
-      if (data.already_subscribed) {
+      const result = await subscribeNewsletter(email, "footer_research_updates");
+      if (result.alreadySubscribed) {
         setStatus("already");
         setMessage("You're already on the list.");
       } else {
@@ -48,9 +31,11 @@ export default function Footer() {
         setMessage("Subscribed — check your inbox for updates.");
         setEmail("");
       }
-    } catch {
+    } catch (err) {
       setStatus("error");
-      setMessage("Network error. Please try again.");
+      setMessage(
+        err instanceof Error ? err.message : "Couldn't subscribe. Please try again."
+      );
     }
   };
 
@@ -81,7 +66,7 @@ export default function Footer() {
           {/* Quick links */}
           <div>
             <p className="font-serif text-2xl text-lime">Quick Links</p>
-            <ul className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3.5">
+            <ul className="mt-6 grid grid-cols-1 gap-x-6 gap-y-3.5 xs:grid-cols-2">
               {FOOTER_LINKS.quick.map((l) => (
                 <li key={l.label}>
                   <Link
@@ -95,7 +80,7 @@ export default function Footer() {
             </ul>
 
             <p className="mt-10 font-serif text-2xl text-lime">Utility</p>
-            <ul className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3.5">
+            <ul className="mt-6 grid grid-cols-1 gap-x-6 gap-y-3.5 xs:grid-cols-2">
               {FOOTER_LINKS.utility.map((l) => (
                 <li key={l.label}>
                   <Link
@@ -127,7 +112,7 @@ export default function Footer() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email address"
                 disabled={status === "loading"}
-                className="w-full bg-transparent text-[15px] text-ivory placeholder:text-ivory/40 focus:outline-none disabled:opacity-60"
+                className="h-11 w-full bg-transparent text-[15px] text-ivory placeholder:text-ivory/40 focus:outline-none disabled:opacity-60"
               />
               <motion.button
                 whileTap={{ scale: 0.94 }}
