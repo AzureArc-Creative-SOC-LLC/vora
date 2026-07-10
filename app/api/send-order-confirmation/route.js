@@ -1,6 +1,7 @@
-import { sendOrderConfirmationEmail } from "../../../../../shared-email/order-email.js";
-// vora lives at Dev/frontend/vora/, shared-email at Dev/shared-email/ —
-// 5 dirs back from this route to Dev, then into shared-email.
+import { sendOrderConfirmationEmail } from "../../../../shared-email/order-email.js";
+// On the VPS, sites are deployed flat as /var/www/<site>/, sibling to
+// /var/www/shared-email/ — 4 dirs back from this route to the site root's
+// parent, then into shared-email.
 
 export async function POST(request) {
   const { customer, order } = await request.json();
