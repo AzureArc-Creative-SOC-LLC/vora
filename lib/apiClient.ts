@@ -14,6 +14,7 @@ import { getToken, clearSession } from "@/lib/session";
 
 export const API_BASE =
   process.env.NEXT_PUBLIC_API_BASE_URL || "https://www.microservices.tech";
+  // "http://localhost:5003";
 
 const DEFAULT_TIMEOUT = 20_000;
 

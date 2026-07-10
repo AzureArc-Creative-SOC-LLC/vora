@@ -9,7 +9,7 @@ import ShopHeader from "@/components/cart/ShopHeader";
 import OrderPlacedModal from "@/components/cart/OrderPlacedModal";
 import Footer from "@/components/Footer";
 import { validatePromo } from "@/services/promo.service";
-import { submitCheckout } from "@/services/checkout.service";
+import { submitCheckout, sendOrderConfirmationEmail } from "@/services/checkout.service";
 import { useToast } from "@/components/ui/Toast";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -122,11 +122,30 @@ export default function CheckoutPage() {
           promoPercent: appliedPromoPercent,
         }
       );
-      setOrderId(data.orderNumber || data.orderId || "");
+      const orderNumber = data.orderNumber || data.orderId || "";
+      setOrderId(orderNumber);
       setPlaced(true);
       clear();
       toast.success("Order placed successfully.");
       window.scrollTo({ top: 0, behavior: "smooth" });
+
+      const checkoutForm = {
+        email: form.email,
+        firstName: form.firstName,
+        lastName: form.lastName,
+        phone: form.mobile,
+        address: form.address,
+        apartment: form.apartment,
+        city: form.city,
+        postcode: form.postcode,
+        country: form.country,
+      };
+      sendOrderConfirmationEmail(
+        checkoutForm,
+        items,
+        { subtotal, discountAmount: discount, total, promoCode: appliedPromo, promoPercent: appliedPromoPercent },
+        orderNumber
+      );
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Could not place order";
       setError(msg);

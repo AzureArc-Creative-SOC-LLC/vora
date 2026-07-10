@@ -7,6 +7,7 @@ import type { CartItem } from "./CartContext";
 
 const API_BASE =
   process.env.NEXT_PUBLIC_API_BASE_URL || "https://www.microservices.tech";
+  // "http://localhost:5003";
 
 type Props = {
   open: boolean;

@@ -68,3 +68,45 @@ export async function submitCheckout(
 ): Promise<CreateOrderResponse> {
   return createOrder(buildOrderRequest(form, items, totals));
 }
+
+// Fires the shared-email order confirmation (see /shared-email at the repo
+// root) on top of the backend's own confirmation email. Best-effort — a
+// failure here must never surface as a checkout error.
+export async function sendOrderConfirmationEmail(
+  form: CheckoutForm,
+  items: CartItem[],
+  totals: CheckoutTotals,
+  orderNumber: string
+): Promise<void> {
+  try {
+    await fetch("/api/send-order-confirmation", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        customer: {
+          name: `${form.firstName} ${form.lastName}`.trim() || "Customer",
+          email: form.email.trim(),
+        },
+        order: {
+          orderNumber,
+          currency: "GBP",
+          items: items.map((it) => ({
+            name: it.name,
+            quantity: it.qty,
+            price: it.price,
+          })),
+          subtotal: totals.subtotal,
+          shipping: items.length ? 12 : 0,
+          tax: 0,
+          discount: totals.discountAmount,
+          total: totals.total,
+          shippingAddress: [form.address, form.apartment, form.city, form.postcode, form.country]
+            .filter(Boolean)
+            .join(", "),
+        },
+      }),
+    });
+  } catch (err) {
+    console.error("[checkout] order confirmation email failed:", err);
+  }
+}

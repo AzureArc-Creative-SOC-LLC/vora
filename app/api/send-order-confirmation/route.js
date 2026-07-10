@@ -1,0 +1,13 @@
+import { sendOrderConfirmationEmail } from "../../../../../shared-email/order-email.js";
+// vora lives at Dev/frontend/vora/, shared-email at Dev/shared-email/ —
+// 5 dirs back from this route to Dev, then into shared-email.
+
+export async function POST(request) {
+  const { customer, order } = await request.json();
+  const result = await sendOrderConfirmationEmail({
+    domain: request.headers.get("host"),
+    customer,
+    order,
+  });
+  return Response.json(result, { status: result.success ? 200 : 502 });
+}
