@@ -138,8 +138,8 @@ export default function Footer() {
             )}
             <div className="mt-8 space-y-2 text-ivory/65">
               <p>research@voralabs.com</p>
-              <p>Tracked, cold-chain UK shipping</p>
-              <p>United Kingdom</p>
+              <p>Independent Janoshik verification</p>
+              <p>99%+ HPLC verified purity</p>
             </div>
           </div>
         </div>

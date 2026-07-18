@@ -1,11 +1,11 @@
 // Display formatters. Backend money fields arrive as strings and DB booleans as
 // 1/0 — we convert ONLY at the display boundary, never mutating stored values.
 
-export function formatMoney(value: string | number | null | undefined, currency = "GBP"): string {
+export function formatMoney(value: string | number | null | undefined, currency = "USD"): string {
   if (value === null || value === undefined || value === "") return "—";
   const n = typeof value === "number" ? value : Number(value);
   if (Number.isNaN(n)) return String(value);
-  return `£${n.toFixed(2)} ${currency}`;
+  return `$${n.toFixed(2)} ${currency}`;
 }
 
 /** Convert a DB-style boolean (1 | 0) — or anything truthy — into a real boolean. */

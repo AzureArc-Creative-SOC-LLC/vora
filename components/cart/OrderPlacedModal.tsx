@@ -54,7 +54,7 @@ export default function OrderPlacedModal({ open, orderId, email }: Props) {
               ) : (
                 " and a confirmation email is on its way"
               )}
-              . It is being prepared for tracked, cold-chain dispatch.
+              . It is being prepared for release with full batch traceability.
             </p>
 
             <div className="mt-7 rounded-2xl border border-sand bg-white px-8 py-5">

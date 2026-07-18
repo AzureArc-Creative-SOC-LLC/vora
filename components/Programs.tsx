@@ -16,7 +16,7 @@ export default function Programs() {
           {PRODUCTS.map((p, i) => (
             <div
               key={p.id}
-              className="sticky"
+              className="lg:sticky"
               style={{ top: `${110 + i * 18}px` }}
             >
               <motion.div
@@ -63,14 +63,14 @@ export default function Programs() {
                       ))}
                     </div>
                   </div>
-                  <div className="mt-8 flex items-center justify-between gap-4 border-t border-white/10 pt-8">
+                  <div className="mt-8 flex flex-col items-stretch justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-center">
                     <span className="font-serif text-3xl text-lime">
                       {p.priceLabel}{" "}
-                      <span className="text-base text-ivory/50">GBP</span>
+                      <span className="text-base text-ivory/50">USD</span>
                     </span>
                     <Link
                       href={`/products/${p.slug}`}
-                      className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3.5 font-semibold text-navy transition-all duration-500 ease-smooth hover:-translate-y-0.5 hover:shadow-[0_20px_40px_-24px_rgba(0,0,0,0.6)]"
+                      className="inline-flex items-center justify-center whitespace-nowrap rounded-full bg-white px-8 py-3.5 font-semibold text-navy transition-all duration-500 ease-smooth hover:-translate-y-0.5 hover:shadow-[0_20px_40px_-24px_rgba(0,0,0,0.6)]"
                     >
                       Explore In Details
                     </Link>

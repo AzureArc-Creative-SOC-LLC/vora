@@ -16,7 +16,7 @@ export const NAV_LINKS = [
 const ALLUVI = "https://alluvi.bz/images";
 
 export const IMG = {
-  hero: "/images/update-img/hero-img-seo.webp",
+  hero: "/images/update-img/updated.webp",
   heroVid1:
     "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=800&q=80",
   heroVid2:
@@ -66,42 +66,42 @@ export const PRODUCTS = [
   {
     id: "RP 01",
     title: "Tirzepatide 40mg",
-    price: "£100",
+    price: "$129.00",
     img: IMG.tirz,
-    tags: ["99%+ Purity", "Janoshik Tested", "Cold Chain", "R&D Only"],
+    tags: ["99%+ Purity", "Janoshik Tested", "HPLC Verified", "R&D Only"],
   },
   {
     id: "RP 02",
     title: "Retatrutide 20mg",
-    price: "£100",
+    price: "$129.00",
     img: IMG.reta20,
     tags: ["99%+ Purity", "HPLC Verified", "Pre-Filled Pen", "R&D Only"],
   },
   {
     id: "RP 03",
     title: "Retatrutide 40mg",
-    price: "£180",
+    price: "$229.00",
     img: IMG.reta40,
     tags: ["High Concentration", "56-Day Stability", "Janoshik Tested", "R&D Only"],
   },
   {
     id: "RP 04",
     title: "BPC-157 & TB-500 40mg",
-    price: "£130",
+    price: "$169.00",
     img: IMG.bpc,
     tags: ["Dual Compound", "Recovery Blend", "COA Provided", "R&D Only"],
   },
   {
     id: "RP 05",
     title: "Glow 70mg",
-    price: "£100",
+    price: "$129.00",
     img: IMG.glow,
-    tags: ["Multi-Peptide", "Batch Traceable", "Cold Chain", "R&D Only"],
+    tags: ["Multi-Peptide", "Batch Traceable", "HPLC Verified", "R&D Only"],
   },
   {
     id: "RP 06",
     title: "NAD+ 1,000mg",
-    price: "£140",
+    price: "$179.00",
     img: IMG.nad,
     tags: ["High Dose", "Cellular Research", "HPLC Verified", "R&D Only"],
   },
@@ -114,16 +114,16 @@ export const BENEFITS = [
     desc: "Every batch is HPLC analysed through Janoshik before release, with a certificate of analysis you can verify yourself.",
   },
   {
-    title: "Cold Chain Delivery",
-    desc: "Temperature-controlled handling from fill to dispatch keeps purity, potency and pH intact in transit.",
+    title: "Batch Traceability",
+    desc: "Each unit carries a unique batch reference tied to its own Janoshik certificate and Certificate of Analysis.",
   },
   {
-    title: "Pen Stability",
-    desc: "Our in-house solution process holds purity for 56 days at room temperature — far beyond ordinary vials.",
+    title: "Formulation Stability",
+    desc: "Our in-house solution process holds verified purity and pH for 56 days at controlled room temperature.",
   },
   {
-    title: "Tracked UK Shipping",
-    desc: "Discreet, fully tracked dispatch across the UK with batch-level traceability on every order.",
+    title: "Quality Assurance",
+    desc: "Multi-stage QA covers identity, purity, potency and stability against a defined specification on every release.",
   },
 ];
 
@@ -143,10 +143,10 @@ export const STEPS = [
   {
     id: "STEP 02",
     title: "Fill & Formulation",
-    desc: "Our own solution process fills each pen to a precise concentration inside a controlled environment built to protect the compound.",
+    desc: "Our own solution process fills each research format to a precise concentration inside a controlled environment built to protect the compound.",
     img: IMG.work2,
     points: [
-      "Exact concentration per pen",
+      "Exact concentration per unit",
       "Controlled fill environment",
       "Target pH locked in",
     ],
@@ -181,30 +181,30 @@ export const PRICING = [
     n: "1",
     name: "Retatrutide 20mg",
     desc: "Entry research quantity.",
-    price: "£100",
+    price: "$129.00",
     img: IMG.reta20,
     popular: false,
-    features: ["Janoshik COA", "99%+ verified purity", "Cold chain dispatch", "Tracked UK shipping"],
+    features: ["Janoshik COA", "99%+ verified purity", "Batch traceability", "Independent verification"],
   },
   {
     n: "2",
     name: "BPC-157 & TB-500 40mg",
     desc: "Recovery & repair research blend.",
-    price: "£130",
+    price: "$169.00",
     img: IMG.bpc,
     popular: true,
     features: [
-      "Dual-compound pen",
-      "56-day pen stability",
+      "Dual-compound formulation",
+      "56-day formulation stability",
       "Independent verification",
-      "Priority dispatch",
+      "Priority release",
     ],
   },
   {
     n: "3",
     name: "Retatrutide 40mg",
     desc: "Extended research quantity.",
-    price: "£180",
+    price: "$229.00",
     img: IMG.reta40,
     popular: false,
     features: [
@@ -223,16 +223,16 @@ export const TESTIMONIALS = [
     sub: "Verified Buyer",
     avatar: AVATARS[0],
     quote:
-      "Easily the best supplier I've ordered from. The COA matched what arrived, packaging was discreet, and it landed in two days. I've already placed my third order.",
-    tags: ["COA Matched", "Fast Delivery", "Discreet", "Reordered"],
+      "Easily the best supplier I've ordered from. The COA matched what arrived and the batch number lined up exactly. I've already placed my third order.",
+    tags: ["COA Matched", "Batch Verified", "Trusted", "Reordered"],
   },
   {
     name: "Sophie M.",
     sub: "Returning Client",
     avatar: AVATARS[1],
     quote:
-      "I was nervous ordering online but Vora Labs made it simple. Tracking updates the whole way, cold-chain packaging intact, and the pen quality is genuinely premium.",
-    tags: ["Great Tracking", "Cold Chain", "Premium Pen", "Trusted"],
+      "I was nervous ordering online but Vora Labs made it simple. The formulation quality is genuinely premium and every batch reference checks out.",
+    tags: ["Batch Verified", "Premium Formulation", "Trusted", "Consistent"],
   },
   {
     name: "James T.",
@@ -247,7 +247,7 @@ export const TESTIMONIALS = [
     sub: "Verified Buyer",
     avatar: AVATARS[0],
     quote:
-      "Ordering, payment and delivery were all smooth. Customer support answered within the hour and the purity was exactly as listed. Couldn't ask for more.",
+      "Ordering was smooth and the purity was exactly as listed on the certificate. Customer support answered within the hour. Couldn't ask for more.",
     tags: ["Smooth Order", "Quick Support", "Accurate", "Recommended"],
   },
   {
@@ -255,16 +255,16 @@ export const TESTIMONIALS = [
     sub: "Returning Client",
     avatar: AVATARS[1],
     quote:
-      "Five orders in and the quality has never dropped. Same purity, same fast UK shipping every time. Vora Labs has become my go-to supplier without question.",
-    tags: ["Consistent", "Fast UK Shipping", "Reliable", "Go-To"],
+      "Five orders in and the quality has never dropped. Same purity, same verified batch every time. Vora Labs has become my go-to supplier without question.",
+    tags: ["Consistent", "Batch Verified", "Reliable", "Go-To"],
   },
   {
     name: "Elena V.",
     sub: "Verified Buyer",
     avatar: AVATARS[2],
     quote:
-      "Brilliant from start to finish. Clear product info, sealed cold-chain delivery, and the batch details on everything. Honestly the most professional service I've used.",
-    tags: ["Clear Info", "Sealed Delivery", "Batch Details", "Professional"],
+      "Brilliant from start to finish. Clear product information, batch details on everything and full COA transparency. The most professional service I've used.",
+    tags: ["Clear Info", "COA Transparent", "Batch Details", "Professional"],
   },
 ];
 
@@ -273,16 +273,16 @@ export const FACILITIES = [
   { n: "01", title: "Synthesis Suite", img: IMG.fac1 },
   { n: "02", title: "Fill & Finish", img: IMG.fac2 },
   { n: "03", title: "HPLC Analytics", img: IMG.fac3 },
-  { n: "04", title: "Cold Chain Storage", img: IMG.fac4 },
+  { n: "04", title: "Controlled Storage", img: IMG.fac4 },
   { n: "05", title: "Stability Testing", img: IMG.fac5 },
-  { n: "06", title: "Dispatch & Logistics", img: IMG.fac6 },
+  { n: "06", title: "Batch Release", img: IMG.fac6 },
 ];
 
 // Scientific team
 export const TEAM = [
   { name: "Dr. Naomi Reardon", role: "Head of Synthesis", img: IMG.team1 },
   { name: "Dr. Idris Bahri", role: "QA & Analytics Lead", img: IMG.team2 },
-  { name: "Julian Marsh", role: "Cold Chain & Logistics", img: IMG.team3 },
+  { name: "Julian Marsh", role: "Batch Release & Traceability", img: IMG.team3 },
 ];
 
 // Research & insights (Blog)
@@ -304,10 +304,10 @@ export const BLOG = [
     img: IMG.blog2,
   },
   {
-    title: "Cold Chain: Protecting Peptide Integrity In Transit",
+    title: "Batch Traceability: The Backbone Of Research-Grade Peptides",
     author: "Julian Marsh",
     date: "Jan 09, 2026",
-    category: "Logistics",
+    category: "Quality",
     read: "4 Min",
     img: IMG.blog3,
   },
@@ -323,8 +323,8 @@ export const FAQS = [
     a: "Each compound ships with an independent Janoshik certificate of analysis. You can match the batch number on your order to the published HPLC report at any time.",
   },
   {
-    q: "How are orders shipped and tracked?",
-    a: "We dispatch discreetly across the UK with fully tracked, temperature-controlled cold-chain handling. A tracking reference is shared as soon as your order leaves the lab.",
+    q: "How is authenticity confirmed on each order?",
+    a: "Every unit is batch-tracked. Cross-reference the batch number on your product against the published Janoshik certificate and Certificate of Analysis to confirm authenticity at any time.",
   },
   {
     q: "How should research material be stored?",
@@ -352,12 +352,12 @@ export const MARQUEE_ITEMS = [
 
 export const TRUST_ITEMS = [
   "Janoshik Tested",
-  "Cold Chain Delivery",
-  "Tracked UK Shipping",
+  "Independent Verification",
+  "99%+ Verified Purity",
   "Certificate of Analysis",
   "HPLC Verified",
   "Batch Traceability",
-  "Discreet Packaging",
+  "Research Grade",
 ];
 
 export const FOOTER_LINKS = {
@@ -372,7 +372,6 @@ export const FOOTER_LINKS = {
     { label: "Contact", href: "/#footer" },
   ],
   utility: [
-    { label: "Shipping Policy", href: "#" },
     { label: "Refund Policy", href: "#" },
     { label: "Privacy Policy", href: "#" },
     { label: "Terms of Service", href: "#" },

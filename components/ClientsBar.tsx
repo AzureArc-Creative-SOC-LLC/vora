@@ -3,23 +3,23 @@
 import { motion } from "framer-motion";
 import {
   LuBadgeCheck,
-  LuSnowflake,
-  LuTruck,
+  LuShield,
+  LuAward,
   LuFileCheck,
   LuFlaskConical,
   LuScanBarcode,
-  LuPackage,
+  LuMicroscope,
 } from "react-icons/lu";
 import type { IconType } from "react-icons";
 
 const ITEMS: { label: string; icon: IconType }[] = [
   { label: "Janoshik Tested", icon: LuBadgeCheck },
-  { label: "Cold Chain Delivery", icon: LuSnowflake },
-  { label: "Tracked UK Shipping", icon: LuTruck },
+  { label: "Independent Verification", icon: LuShield },
+  { label: "99%+ Verified Purity", icon: LuAward },
   { label: "Certificate of Analysis", icon: LuFileCheck },
   { label: "HPLC Verified", icon: LuFlaskConical },
   { label: "Batch Traceability", icon: LuScanBarcode },
-  { label: "Discreet Packaging", icon: LuPackage },
+  { label: "Research Grade", icon: LuMicroscope },
 ];
 
 export default function ClientsBar() {

@@ -2,10 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FiArrowUpRight, FiCheck } from "react-icons/fi";
+import { LuLeaf } from "react-icons/lu";
 import { getProduct, relatedProducts, PRODUCTS } from "@/lib/products";
 import ShopHeader from "@/components/cart/ShopHeader";
 import ProductGallery from "@/components/cart/ProductGallery";
 import AddToCart from "@/components/cart/AddToCart";
+import ProductInfoTabs from "@/components/cart/ProductInfoTabs";
+import JanoshikReportModal from "@/components/cart/JanoshikReportModal";
 import Footer from "@/components/Footer";
 
 export function generateStaticParams() {
@@ -95,6 +98,107 @@ export default async function ProductPage({
               <AddToCart product={product} />
             </div>
 
+            {/* Description + Safety Protocol */}
+            <div className="mt-8 rounded-2xl border border-sand bg-white/60 p-5 text-[15px] leading-relaxed text-navy/75">
+              <p>{product.description}</p>
+              <p className="mt-4 rounded-xl bg-[#fff6d6]/60 px-4 py-3 text-[13px] leading-relaxed text-navy/80">
+                <strong className="text-navy">Safety Protocol:</strong>{" "}
+                Produced for laboratory research only. Not for human or veterinary consumption.
+              </p>
+            </div>
+
+            {/* Janoshik Analytical Report button (opens modal) */}
+            {product.janoshikUrl ? (
+              <JanoshikReportModal
+                reportUrl={product.janoshikUrl}
+                productName={product.name}
+                batchNumber={product.batchNumber}
+                sampleImages={product.janoshikSamples}
+              />
+            ) : (
+              <span className="mt-6 inline-flex w-fit items-center gap-2 rounded-full border border-navy/15 bg-white/50 px-6 py-3 text-[14px] font-semibold text-navy/50">
+                <LuLeaf size={16} />
+                Janoshik Analytical Report — coming soon
+              </span>
+            )}
+
+            {/* Janoshik Third-Party Lab Analysis panel */}
+            <section className="mt-8 rounded-[24px] border border-sand bg-white p-6 sm:p-7">
+              <div className="text-center">
+                <h2 className="font-serif text-2xl text-navy">
+                  Janoshik Third-Party Lab Analysis
+                </h2>
+                <p className="mt-2 text-[14px] text-navy/60">
+                  Independently tested and verified by Janoshik Analytical.
+                </p>
+              </div>
+
+              <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                <StatCard label="Batch Number" value={product.batchNumber} />
+                <StatCard label="Fill Volume" value={product.fillVolume} />
+                <StatCard label="Purity" value={product.purity} />
+              </div>
+
+              <div className="mt-6 overflow-hidden rounded-2xl border border-sand">
+                <table className="w-full text-left text-[14px]">
+                  <thead>
+                    <tr className="bg-beige text-[11px] font-semibold uppercase tracking-[0.14em] text-navy/60">
+                      <th className="px-4 py-3">Compound</th>
+                      <th className="px-4 py-3">Concentration</th>
+                      <th className="px-4 py-3">Verified Content</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-sand bg-white text-navy">
+                    {product.analytes.map((a) => (
+                      <tr key={a.compound}>
+                        <td className="px-4 py-3.5 font-medium">{a.compound}</td>
+                        <td className="px-4 py-3.5">{a.concentration}</td>
+                        <td className="px-4 py-3.5">{a.verifiedContent}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <p className="mt-4 text-[12px] text-navy/55">
+                Concentration is measured per mL; verified content reflects the total
+                assayed mass across the stated fill volume.
+              </p>
+            </section>
+
+            {/* Info tabs */}
+            <section className="mt-6 rounded-[24px] border border-sand bg-white p-6 sm:p-7">
+              <ProductInfoTabs
+                tabs={[
+                  {
+                    key: "package",
+                    label: "Package Contents",
+                    body: (
+                      <ul className="space-y-3">
+                        {product.packageContents.map((c) => (
+                          <li key={c} className="flex items-start gap-3">
+                            <span className="mt-1 grid h-5 w-5 flex-none place-items-center rounded-full bg-lime/50 text-navy">
+                              <FiCheck size={12} />
+                            </span>
+                            <span>{c}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ),
+                  },
+                  {
+                    key: "storage",
+                    label: "Storage Logic",
+                    body: <p>{product.storageLogic}</p>,
+                  },
+                  {
+                    key: "supply",
+                    label: "Supply Chain",
+                    body: <p>{product.supplyChain}</p>,
+                  },
+                ]}
+              />
+            </section>
           </div>
         </div>
 
@@ -146,5 +250,16 @@ export default async function ProductPage({
 
       <Footer />
     </main>
+  );
+}
+
+function StatCard({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-xl border border-sand bg-beige/40 p-4">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-navy/50">
+        {label}
+      </p>
+      <p className="mt-1.5 font-serif text-lg text-navy">{value}</p>
+    </div>
   );
 }

@@ -10,8 +10,7 @@ import Footer from "@/components/Footer";
 
 export default function CartPage() {
   const { items, setQty, remove, subtotal, count, ready } = useCart();
-  const shipping = items.length ? 12 : 0;
-  const total = subtotal + shipping;
+  const total = subtotal;
 
   return (
     <main className="min-h-screen bg-ivory">
@@ -76,7 +75,7 @@ export default function CartPage() {
                         {it.name}
                       </Link>
                       <p className="mt-1 text-sm text-navy/50">
-                        £{it.price} GBP each
+                        ${it.price.toFixed(2)} USD each
                       </p>
 
                       <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -110,7 +109,7 @@ export default function CartPage() {
 
                     <div className="self-stretch text-right">
                       <span className="font-serif text-2xl text-navy">
-                        £{it.price * it.qty}
+                        ${(it.price * it.qty).toFixed(2)}
                       </span>
                     </div>
                   </motion.div>
@@ -125,16 +124,12 @@ export default function CartPage() {
                 <dl className="mt-6 space-y-4 text-[15px]">
                   <div className="flex justify-between">
                     <dt className="text-navy/60">Subtotal</dt>
-                    <dd className="font-medium text-navy">£{subtotal} GBP</dd>
-                  </div>
-                  <div className="flex justify-between">
-                    <dt className="text-navy/60">Tracked UK shipping</dt>
-                    <dd className="font-medium text-navy">£{shipping} GBP</dd>
+                    <dd className="font-medium text-navy">${subtotal.toFixed(2)} USD</dd>
                   </div>
                   <div className="my-2 h-px bg-sand" />
                   <div className="flex items-center justify-between">
                     <dt className="font-serif text-lg text-navy">Total</dt>
-                    <dd className="font-serif text-2xl text-navy">£{total} GBP</dd>
+                    <dd className="font-serif text-2xl text-navy">${total.toFixed(2)} USD</dd>
                   </div>
                 </dl>
 

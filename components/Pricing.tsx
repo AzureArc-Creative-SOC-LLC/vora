@@ -74,7 +74,7 @@ export default function Pricing() {
                       popular ? "text-ivory/60" : "text-navy/50"
                     )}
                   >
-                    GBP
+                    USD
                   </span>
                 </p>
 

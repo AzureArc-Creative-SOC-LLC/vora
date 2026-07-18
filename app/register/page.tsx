@@ -12,6 +12,8 @@ import { useToast } from "@/components/ui/Toast";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const COUNTRIES = [
+  "United States",
+  "Canada",
   "United Kingdom",
   "Ireland",
   "Germany",
@@ -19,9 +21,7 @@ const COUNTRIES = [
   "Netherlands",
   "Spain",
   "Italy",
-  "United States",
-  "Canada",
-  "United Arab Emirates",
+  "Australia",
   "Other",
 ];
 

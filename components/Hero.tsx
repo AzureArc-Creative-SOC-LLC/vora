@@ -86,6 +86,7 @@ export default function Hero() {
             alt="People practicing wellness outdoors"
             fill
             priority
+            quality={95}
             sizes="100vw"
             className="object-cover object-center"
           />

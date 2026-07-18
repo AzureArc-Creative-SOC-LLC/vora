@@ -133,7 +133,7 @@ export default function OrderModal({
 
               <div className="mt-1 flex items-center justify-between rounded-2xl bg-beige px-5 py-3.5">
                 <span className="text-[15px] text-navy/70">Total</span>
-                <span className="font-serif text-2xl text-navy">£{total} GBP</span>
+                <span className="font-serif text-2xl text-navy">${total.toFixed(2)} USD</span>
               </div>
 
               {error && (

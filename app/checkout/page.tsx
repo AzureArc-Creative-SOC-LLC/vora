@@ -41,12 +41,11 @@ export default function CheckoutPage() {
   const [promoError, setPromoError] = useState("");
   const [promoLoading, setPromoLoading] = useState(false);
 
-  const shipping = items.length ? 12 : 0;
   // Discount is derived from the backend-validated percent — never invented here.
   const discount = appliedPromo
     ? Math.round((subtotal * appliedPromoPercent) / 100)
     : 0;
-  const total = subtotal + shipping - discount;
+  const total = subtotal - discount;
 
   const applyPromo = async () => {
     const code = promoInput.trim().toUpperCase();
@@ -182,7 +181,7 @@ export default function CheckoutPage() {
       <div className="container-x py-12 lg:py-16">
         <h1 className="font-serif text-4xl text-navy lg:text-5xl">Checkout</h1>
         <p className="mt-3 text-navy/60">
-          Enter your shipping details and place your order securely.
+          Enter your billing details and place your order securely.
         </p>
 
         <form
@@ -226,9 +225,9 @@ export default function CheckoutPage() {
               </div>
             </section>
 
-            {/* Shipping */}
+            {/* Billing */}
             <section className="rounded-[28px] border border-sand bg-white p-7 sm:p-8">
-              <SectionTitle>Shipping address</SectionTitle>
+              <SectionTitle>Billing address</SectionTitle>
               <div className="mt-5 grid gap-4">
                 <Field
                   label="Address line 1"
@@ -302,7 +301,7 @@ export default function CheckoutPage() {
                     </div>
                     <p className="min-w-0 flex-1 text-[15px] text-navy">{it.name}</p>
                     <span className="font-medium text-navy">
-                      £{it.price * it.qty}
+                      ${(it.price * it.qty).toFixed(2)}
                     </span>
                   </div>
                 ))}
@@ -362,21 +361,17 @@ export default function CheckoutPage() {
               <dl className="space-y-3 text-[15px]">
                 <div className="flex justify-between">
                   <dt className="text-navy/60">Subtotal</dt>
-                  <dd className="font-medium text-navy">£{subtotal} GBP</dd>
-                </div>
-                <div className="flex justify-between">
-                  <dt className="text-navy/60">Tracked UK shipping</dt>
-                  <dd className="font-medium text-navy">£{shipping} GBP</dd>
+                  <dd className="font-medium text-navy">${subtotal.toFixed(2)} USD</dd>
                 </div>
                 {discount > 0 && (
                   <div className="flex justify-between">
                     <dt className="text-navy/60">Discount ({appliedPromo})</dt>
-                    <dd className="font-medium text-green-700">−£{discount} GBP</dd>
+                    <dd className="font-medium text-green-700">−${discount.toFixed(2)} USD</dd>
                   </div>
                 )}
                 <div className="flex items-center justify-between pt-2">
                   <dt className="font-serif text-lg text-navy">Total</dt>
-                  <dd className="font-serif text-2xl text-navy">£{total} GBP</dd>
+                  <dd className="font-serif text-2xl text-navy">${total.toFixed(2)} USD</dd>
                 </div>
               </dl>
 

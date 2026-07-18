@@ -24,8 +24,8 @@ export default function OrderPlaced({ orderId }: { orderId: string }) {
         </h1>
         <p className="mt-4 max-w-md text-navy/65">
           Thank you — your research order has been received and a confirmation
-          email is on its way. It is being prepared for tracked, cold-chain
-          dispatch.
+          email is on its way. It is being prepared for release with full
+          batch traceability.
         </p>
         <div className="mt-8 rounded-2xl border border-sand bg-white px-8 py-5">
           <p className="text-sm uppercase tracking-wider text-navy/50">

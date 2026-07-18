@@ -199,10 +199,6 @@ function TrackOrder() {
                     <dt className="text-navy/60">Subtotal</dt>
                     <dd className="font-medium text-navy">{formatMoney(order.subtotal)}</dd>
                   </div>
-                  <div className="flex justify-between">
-                    <dt className="text-navy/60">Shipping</dt>
-                    <dd className="font-medium text-navy">{formatMoney(order.shipping)}</dd>
-                  </div>
                   {order.discount_amount && Number(order.discount_amount) > 0 && (
                     <div className="flex justify-between">
                       <dt className="text-navy/60">
@@ -223,7 +219,7 @@ function TrackOrder() {
               </section>
 
               <section className="rounded-[28px] border border-sand bg-white p-7 sm:p-8">
-                <h2 className="font-serif text-2xl text-navy">Shipping to</h2>
+                <h2 className="font-serif text-2xl text-navy">Billing to</h2>
                 <div className="mt-4 space-y-1 text-[15px] text-navy/75">
                   <p className="text-navy">{order.customer_name}</p>
                   {order.shipping_address && <p>{order.shipping_address}</p>}

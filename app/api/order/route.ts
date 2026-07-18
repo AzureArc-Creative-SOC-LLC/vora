@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 type Item = { name: string; price: number; qty: number };
-type ShippingAddress = {
+type BillingAddress = {
   line1?: string;
   line2?: string;
   city?: string;
@@ -16,11 +16,10 @@ type Body = {
     email: string;
     mobile: string;
   };
-  shippingAddress?: ShippingAddress;
+  billingAddress?: BillingAddress;
   promoCode?: string;
   items: Item[];
   subtotal: number;
-  shipping: number;
   discount?: number;
   total: number;
 };
@@ -35,14 +34,14 @@ function itemsTable(items: Item[]) {
       (i) =>
         `<tr>
           <td style="padding:8px 0;border-bottom:1px solid #eee">${i.name} × ${i.qty}</td>
-          <td style="padding:8px 0;border-bottom:1px solid #eee;text-align:right">£${i.price * i.qty}</td>
+          <td style="padding:8px 0;border-bottom:1px solid #eee;text-align:right">$${(i.price * i.qty).toFixed(2)}</td>
         </tr>`
     )
     .join("");
 }
 
-function shippingBlock(b: Body) {
-  const a = b.shippingAddress;
+function billingBlock(b: Body) {
+  const a = b.billingAddress;
   if (!a?.line1) return "";
   const lines = [
     `${b.customer.firstName} ${b.customer.lastName}`,
@@ -52,7 +51,7 @@ function shippingBlock(b: Body) {
     a.country,
   ].filter(Boolean);
   return `
-    <p style="font-size:13px;color:#5B7088;margin:4px 0 0"><strong style="color:#043460">Ship to</strong><br/>${lines.join("<br/>")}</p>`;
+    <p style="font-size:13px;color:#5B7088;margin:4px 0 0"><strong style="color:#043460">Billing to</strong><br/>${lines.join("<br/>")}</p>`;
 }
 
 function emailHtml(b: Body, id: string) {
@@ -60,20 +59,19 @@ function emailHtml(b: Body, id: string) {
   <div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:0 auto;color:#043460">
     <h2 style="color:#043460">Vora Labs — Order Confirmation</h2>
     <p>Hi ${b.customer.firstName},</p>
-    <p>Thank you for your order. Your reference is <strong>${id}</strong>. It is being prepared for tracked, cold-chain dispatch.</p>
+    <p>Thank you for your order. Your reference is <strong>${id}</strong>. It is being prepared for release with full batch traceability.</p>
     <table style="width:100%;border-collapse:collapse;margin:16px 0">
       ${itemsTable(b.items)}
-      <tr><td style="padding:8px 0">Subtotal</td><td style="padding:8px 0;text-align:right">£${b.subtotal}</td></tr>
-      <tr><td style="padding:8px 0">Shipping</td><td style="padding:8px 0;text-align:right">£${b.shipping}</td></tr>
+      <tr><td style="padding:8px 0">Subtotal</td><td style="padding:8px 0;text-align:right">$${b.subtotal.toFixed(2)}</td></tr>
       ${
         b.discount && b.discount > 0
-          ? `<tr><td style="padding:8px 0">Discount${b.promoCode ? ` (${b.promoCode})` : ""}</td><td style="padding:8px 0;text-align:right;color:#157347">−£${b.discount}</td></tr>`
+          ? `<tr><td style="padding:8px 0">Discount${b.promoCode ? ` (${b.promoCode})` : ""}</td><td style="padding:8px 0;text-align:right;color:#157347">−$${b.discount.toFixed(2)}</td></tr>`
           : ""
       }
       <tr><td style="padding:10px 0;font-weight:bold;border-top:2px solid #043460">Total</td>
-          <td style="padding:10px 0;text-align:right;font-weight:bold;border-top:2px solid #043460">£${b.total} GBP</td></tr>
+          <td style="padding:10px 0;text-align:right;font-weight:bold;border-top:2px solid #043460">$${b.total.toFixed(2)} USD</td></tr>
     </table>
-    ${shippingBlock(b)}
+    ${billingBlock(b)}
     <p style="font-size:13px;color:#5B7088">Contact: ${b.customer.email} · ${b.customer.mobile}</p>
     <p style="font-size:12px;color:#9aa7b4;text-transform:uppercase;letter-spacing:1px">For laboratory R&amp;D use only — not for human or veterinary consumption.</p>
   </div>`;

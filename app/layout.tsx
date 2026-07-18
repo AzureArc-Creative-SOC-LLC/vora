@@ -31,7 +31,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "Vora Labs — Premium Research Peptides for Laboratory R&D",
   description:
-    "Vora Labs develops, fills and independently verifies premium research peptides for controlled laboratory R&D. Janoshik tested, cold chain delivery, tracked UK shipping. Research use only — not for human or veterinary consumption.",
+    "Vora Labs develops, fills and independently verifies premium research peptides for controlled laboratory R&D. Janoshik tested, 99%+ HPLC verified purity, batch-level Certificate of Analysis on every release. Research use only — not for human or veterinary consumption.",
 };
 
 export default function RootLayout({
